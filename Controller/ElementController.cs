@@ -28,12 +28,17 @@ namespace WindowsFormsApp2.Controller
                 {
                     Element newElement = new Element();
 
-                    do
-                    {
-                        newElement.PosX += r.Next(CellPosX - radius, CellPosX - (int)newElement.SizeW + radius);
-                        newElement.PosY += r.Next(CellPosY - radius, CellPosY - (int)newElement.SizeH + radius);
-                    } while (newElement.PosX < 0 || newElement.PosX > clientSize.Width - newElement.SizeW ||
-                             newElement.PosY < 0 || newElement.PosY > clientSize.Height - newElement.SizeH);
+                    newElement.PosX += r.Next(CellPosX - radius, CellPosX - (int)newElement.SizeW + radius);
+                    if (newElement.PosX < 0)
+                        newElement.PosX = 0;
+                    else if (newElement.PosX > clientSize.Width - newElement.SizeW)
+                        newElement.PosX = (int)(clientSize.Width - newElement.SizeW);
+
+                    newElement.PosY += r.Next(CellPosY - radius, CellPosY - (int)newElement.SizeH + radius);
+                    if (newElement.PosY < 0)
+                        newElement.PosY = 0;
+                    else if (newElement.PosY > clientSize.Height - newElement.SizeH)
+                        newElement.PosY = (int)(clientSize.Height - newElement.SizeH);
 
                     this.elementCollection.Add(newElement);
                 }
