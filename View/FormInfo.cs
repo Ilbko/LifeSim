@@ -18,22 +18,26 @@ namespace WindowsFormsApp2.View
         string childIdStr = string.Empty;
         Timer updateTimer = new Timer();
 
-        CellController controller = new CellController();
+        public CellController controller;
         public FormInfo()
         {
             InitializeComponent();
         }
 
-        public FormInfo(Cell tmp)
+        public FormInfo(Cell tmp, CellController controller)
         {
             InitializeComponent();
             this.infoCell = tmp;
 
             this.updateTimer.Tick += UpdateTimer_Tick;
-            this.updateTimer.Interval = 1000;
+            this.updateTimer.Interval = 500;
             this.updateTimer.Start();
 
+            this.controller = controller;
             this.button4.BackColor = tmp.CellColor;
+
+            if (DateTime.Now.Hour >= 18 || DateTime.Now.Hour <= 6)
+                this.BackColor = Color.Black;
         }
 
         private void UpdateTimer_Tick(object sender, EventArgs e)
@@ -62,14 +66,14 @@ namespace WindowsFormsApp2.View
 
         private void button2_Click(object sender, EventArgs e)
         {
-            infoCell.Age -= 4;
+            infoCell.Age -= 3;
             if (infoCell.Age < 0)
                 infoCell.Age = 0;
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private async void button3_Click(object sender, EventArgs e)
         {
-            controller.GenerateNewCell(infoCell);
+            await Task.Run(() => controller.GenerateNewCell(infoCell));           
         }
     }
 }

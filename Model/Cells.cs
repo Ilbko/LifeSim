@@ -4,7 +4,7 @@ using WindowsFormsApp2.Model.Base;
 
 namespace WindowsFormsApp2.Model
 {
-    class Cells : IEnumerable
+    public class Cells : IEnumerable
     {
         public List<Cell> cells { get; private set; } = new List<Cell>();
         public Cell this[int key] 

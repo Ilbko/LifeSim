@@ -47,9 +47,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\CellController.cs" />
+    <Compile Include="Controller\ElementController.cs" />
     <Compile Include="Model\Base\Cell.cs" />
-    <Compile Include="Model\Base\ICells.cs" />
+    <Compile Include="Model\Base\Element.cs" />
     <Compile Include="Model\Cells.cs" />
+    <Compile Include="Model\Elements.cs" />
     <Compile Include="View\Form1.cs">
       <SubType>Form</SubType>
     </Compile>

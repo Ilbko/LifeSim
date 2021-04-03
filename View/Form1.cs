@@ -14,16 +14,20 @@ namespace WindowsFormsApp2
     {
         Random r;
         CellController controller;
+        ElementController controller_el;
         readonly int PEN_SIZE = 7;
         readonly Color PEN_COLOR_GOOD;
         readonly Color PEN_COLOR_DIE;
+        Color elementColor = Color.Black;
         readonly Pen myPen;
         readonly Pen diePen;
+        readonly Pen elementPen;
         public Form1()
         {
             InitializeComponent();
             
             controller = new CellController();
+            controller_el = new ElementController();
             r = new Random();
 
             myPen = new Pen(PEN_COLOR_GOOD, PEN_SIZE);
@@ -45,6 +49,14 @@ namespace WindowsFormsApp2
             timerBirth.Tick += TimerBirth_Tick;
             timerBirth.Interval = 5000;
             timerBirth.Start();
+
+            if (DateTime.Now.Hour >= 18 || DateTime.Now.Hour <= 6)
+            {
+                this.BackColor = Color.Black;
+                this.elementColor = Color.White;
+            }
+
+            elementPen = new Pen(elementColor, 3);
         }
 
         private async void TimerBirth_Tick(object sender, EventArgs e)
@@ -57,6 +69,7 @@ namespace WindowsFormsApp2
                 {
                     await Task.Run(() => controller.GenerateNewCell(controller.cellCollection[i]));
                     //new Task(() => controller.GenerateNewCell(controller.cellCollection[i]));
+                    //controller.GenerateNewCell(controller.cellCollection[i]);
                 }
                 catch (System.ArgumentOutOfRangeException) { }           
             }
@@ -64,7 +77,11 @@ namespace WindowsFormsApp2
             this.Refresh();
         }
 
-        private void TimerKiller_Tick(object sender, EventArgs e) => controller.LifeCicle();
+        private async void TimerKiller_Tick(object sender, EventArgs e)
+        {
+            await Task.Run(() => controller.LifeCycle(this.ClientSize, controller_el));
+            await Task.Run(() => controller_el.AgeElement());
+        }
 
         private async void TimerMove_Tick(object sender, EventArgs e)
         {
@@ -98,6 +115,11 @@ namespace WindowsFormsApp2
                 diePen.Color = Color.FromArgb(30, item.CellColor);
                 e.Graphics.DrawRectangle(item.Age < controller.maxCellLife - 1 ? myPen : diePen, new Rectangle((int)item.PosX, (int)item.PosY, (int)item.SizeH, (int)item.SizeW));
             }
+
+            foreach (Element item in controller_el.elementCollection)
+            {
+                e.Graphics.DrawRectangle(elementPen, new Rectangle(item.PosX, item.PosY, (int)item.SizeH, (int)item.SizeW));
+            }
         }
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
@@ -117,7 +139,7 @@ namespace WindowsFormsApp2
                             if (child.ParentId == item.Id)
                                 childId.Add(child.Id);
 
-                        new FormInfo(tmp).Show();
+                        new FormInfo(tmp, controller).Show();
                         break;
                     }
                 }

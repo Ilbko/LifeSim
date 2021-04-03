@@ -25,6 +25,9 @@ namespace WindowsFormsApp2.Model.Base
 
         //Количество детей будет заменять список идентификаторов детей
         //public int Children { get; set; }
+        /*Lazy, чтобы не приходилось выделять новую память под список, если клетка не может иметь детей
+          или чтобы не выделять память с помощью if (ChildrenId == null)*/
+        public Lazy<List<int>> ChildrenId { get; set; } = new Lazy<List<int>>();
         public int MaxChildren { get; private set; }
         public float PosX { get; set; }
         public float PosY { get; set; }
@@ -32,7 +35,6 @@ namespace WindowsFormsApp2.Model.Base
         public float SizeW { get; private set; }
         public int Age { get; set; }
 
-        public Lazy<List<int>> ChildrenId = new Lazy<List<int>>();
         public bool isSamePosition(Cell other) => other.PosX == PosX && other.PosY == PosY;
         public void Old() => Age++;
     }

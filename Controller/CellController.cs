@@ -8,16 +8,17 @@ using System.Collections.Generic;
 
 namespace WindowsFormsApp2.Controller
 {
-    class CellController
+    public class CellController
     {
         public Cells cellCollection { get; private set; } = new Cells();
+        //public ElementController controller_el { get; private set; }
         protected Random r = new Random();
         protected readonly int radius = 25;
         protected readonly int minCellCount = 2;
         public readonly int maxCellLife = 20;
         protected int totalId = 0;
 
-        public int Count { get => cellCollection.Count(); }
+        //public int Count { get => cellCollection.Count(); }
         //public void GenerateNewCell()
         //{
         //    lock (this)
@@ -44,25 +45,31 @@ namespace WindowsFormsApp2.Controller
 
         public void GenerateNewCell(Cell tmp)
         {
-            if (tmp.ChildrenId.Value.Count() < tmp.MaxChildren)
+            lock (this)
             {
-                do
+                if (tmp.ChildrenId.Value.Count() < tmp.MaxChildren)
                 {
-                    if (r.Next((int)tmp.SizeH * radius) < (((int)tmp.SizeH * radius) / 2))
-                        tmp.PosX += tmp.SizeH;
-                    else
-                        tmp.PosX -= tmp.SizeH;
-                    if (r.Next((int)tmp.SizeW * radius) < (((int)tmp.SizeW * radius) / 2))
-                        tmp.PosY += tmp.SizeW;
-                    else
-                        tmp.PosY -= tmp.SizeW;
-                } while (this.cellCollection.Count() == 0 && this.cellCollection.cells.Any<Cell>(x => x.isSamePosition(tmp)));
+                    int newId = totalId++;
+                    Cell newCell = new Cell(tmp, newId, tmp.Id, tmp.CellColor, r.Next(0, 5));
 
-                int newId = totalId++;
-                this.cellCollection.Add(new Cell(tmp, newId, tmp.Id, tmp.CellColor, r.Next(0, 5)));
+                    do
+                    {
+                        if (r.Next((int)newCell.SizeH * radius) < (((int)newCell.SizeH * radius) / 2))
+                            newCell.PosX += newCell.SizeH;
+                        else
+                            newCell.PosX -= newCell.SizeH;
+                        if (r.Next((int)newCell.SizeW * radius) < (((int)newCell.SizeW * radius) / 2))
+                            newCell.PosY += newCell.SizeW;
+                        else
+                            newCell.PosY -= newCell.SizeW;
+                    } while (this.cellCollection.cells.Any(x => x.isSamePosition(newCell)));
 
-                tmp.ChildrenId.Value.Add(newId);
-                //tmp.Children++;
+                    //this.cellCollection.Add(new Cell(tmp, newId, tmp.Id, tmp.CellColor, r.Next(0, 5)));
+                    this.cellCollection.Add(newCell);
+
+                    tmp.ChildrenId.Value.Add(newId);
+                    //tmp.Children++;
+                }
             }
         }
 
@@ -74,33 +81,40 @@ namespace WindowsFormsApp2.Controller
             //    tmp.PosX = r.Next((int)tmp.PosX - 3, (int)tmp.PosX - 4);
             //}
             //while (tmp.PosX < 0 || tmp.PosX > field.Width - tmp.SizeW);
+            lock (this)
+            {
+                tmp.PosX = r.Next((int)tmp.PosX - 3, (int)tmp.PosX + 4);
+                if (tmp.PosX < 0)
+                    tmp.PosX = 0;
+                else if (tmp.PosX > field.Width - tmp.SizeW)
+                    tmp.PosX = field.Width - tmp.SizeW;
 
-            tmp.PosX = r.Next((int)tmp.PosX - 3, (int)tmp.PosX + 4);
-            if (tmp.PosX < 0)
-                tmp.PosX = 0;
-            else if (tmp.PosX > field.Width - tmp.SizeW)
-                tmp.PosX = field.Width - tmp.SizeW;
-
-            tmp.PosY = r.Next((int)tmp.PosY - 3, (int)tmp.PosY + 4);
-            if (tmp.PosY < 0)
-                tmp.PosY = 0;
-            else if (tmp.PosY > field.Height - tmp.SizeH)
-                tmp.PosY = field.Height - tmp.SizeH;
+                tmp.PosY = r.Next((int)tmp.PosY - 3, (int)tmp.PosY + 4);
+                if (tmp.PosY < 0)
+                    tmp.PosY = 0;
+                else if (tmp.PosY > field.Height - tmp.SizeH)
+                    tmp.PosY = field.Height - tmp.SizeH;
+            }
         }
 
         public void GenerateNewCellClick(Point loc)
         {
              //if (cellCollection.Count() == 0)
-                 this.cellCollection.Add(new Cell(loc.X, loc.Y, totalId++, 0, Color.FromArgb(r.Next(0, 255), r.Next(0, 255), r.Next(0, 255)), r.Next(0, 5)));                
+                 this.cellCollection.Add(new Cell(loc.X, loc.Y, totalId++, 0, Color.FromArgb(r.Next(0, 255), r.Next(0, 255), r.Next(0, 255)), r.Next(3, 5)));                
         }
-        public void LifeCicle()
+        public void LifeCycle(Size clientSize, ElementController controller_el)
         {
             lock(this){
                 for (int i = 0; i < cellCollection.Count(); i++)
                 {
                     cellCollection[i].Old();
                     if (cellCollection[i].Age >= maxCellLife)
+                    {
+                        controller_el.GenerateNewElement((int)cellCollection[i].PosX, (int)cellCollection[i].PosY,
+                                                         (int)cellCollection[i].SizeW, (int)cellCollection[i].SizeH,
+                                                         clientSize);
                         Remove(cellCollection[i]);
+                    }
                 } 
             }
         }
