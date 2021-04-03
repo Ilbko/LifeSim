@@ -13,7 +13,7 @@ namespace WindowsFormsApp2
     {
         Random r;
         CellController controller;
-        readonly int PEN_SIZE = 3;
+        readonly int PEN_SIZE = 7;
         readonly Color PEN_COLOR_GOOD;
         readonly Color PEN_COLOR_DIE;
         readonly Pen myPen;
@@ -30,23 +30,42 @@ namespace WindowsFormsApp2
 
             this.DoubleBuffered = true;
 
-            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-            timer.Tick += Timer_Tick;
-            timer.Interval = 100;
-            timer.Start();
+            System.Windows.Forms.Timer timerMove = new System.Windows.Forms.Timer();
+            timerMove.Tick += TimerMove_Tick;
+            timerMove.Interval = 10;
+            timerMove.Start();
 
             System.Windows.Forms.Timer timerKiller = new System.Windows.Forms.Timer();
             timerKiller.Tick += TimerKiller_Tick;
-            timerKiller.Interval = 200;
+            timerKiller.Interval = 1000;
             timerKiller.Start();
+
+            System.Windows.Forms.Timer timerBirth = new System.Windows.Forms.Timer();
+            timerBirth.Tick += TimerBirth_Tick;
+            timerBirth.Interval = 1500;
+            timerBirth.Start();
         }
 
-        private void TimerKiller_Tick(object sender, EventArgs e)
+        private async void TimerBirth_Tick(object sender, EventArgs e)
         {
-            controller.LifeCicle();
+            int limit = controller.cellCollection.Count();
+
+            for (int i = 0; i < limit; i++)
+            {
+                try
+                {
+                    await Task.Run(() => controller.GenerateNewCell(controller.cellCollection[i]));
+                    //new Task(() => controller.GenerateNewCell(controller.cellCollection[i]));
+                }
+                catch (System.ArgumentOutOfRangeException) { }           
+            }
+            Task.WaitAll();
+            this.Refresh();
         }
 
-        private async void Timer_Tick(object sender, EventArgs e)
+        private void TimerKiller_Tick(object sender, EventArgs e) => controller.LifeCicle();
+
+        private async void TimerMove_Tick(object sender, EventArgs e)
         {
             if (controller.cellCollection.Count() > 0)
             {
@@ -55,15 +74,16 @@ namespace WindowsFormsApp2
 
                 //Лагает, "некрасиво" работает
                 //for(int i = 0; i < controller.cellCollection.Count(); i++)
-                try
+
+                for (int i = 0; i < limit; i++)
                 {
-                    for (int i = 0; i < limit; i++)
+                    //Этот блок никак не будет влиять на работу программы, ведь мёртвая клетка не может породить новую клетку
+                    try
                     {
-                        await Task.Run(() => controller.GenerateNewCell(controller.cellCollection[i]));
-                        //new Task(() => controller.GenerateNewCell(controller.cellCollection[i]));
+                        await Task.Run(() => controller.MoveCell(controller.cellCollection[i]));
                     }
+                    catch (System.ArgumentOutOfRangeException) { }
                 }
-                catch (System.ArgumentOutOfRangeException){ }
             }
             Task.WaitAll();
             this.Refresh();
@@ -81,7 +101,20 @@ namespace WindowsFormsApp2
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
-            controller.GenerateNewCellClick(e.Location); 
+            if (e.Button == MouseButtons.Left)
+                controller.GenerateNewCellClick(e.Location);
+            else if (e.Button == MouseButtons.Right)
+            {
+                foreach(Cell item in controller.cellCollection)
+                {
+                    if (e.Location.X > item.PosX && e.Location.X < item.PosX + item.SizeW &&
+                        e.Location.Y > item.PosY && e.Location.Y < item.PosY + item.SizeH)
+                    {
+                        MessageBox.Show("asdfadss");
+                        break;
+                    }
+                }
+            }
         }
     }
 }

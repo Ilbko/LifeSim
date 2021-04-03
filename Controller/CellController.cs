@@ -3,6 +3,7 @@ using WindowsFormsApp2.Model;
 using WindowsFormsApp2.Model.Base;
 using System.Linq;
 using System.Drawing;
+using System.Threading;
 
 namespace WindowsFormsApp2.Controller
 {
@@ -12,7 +13,8 @@ namespace WindowsFormsApp2.Controller
         protected Random r = new Random();
         protected readonly int radius = 25;
         protected readonly int minCellCount = 2;
-        public readonly int maxCellLife = 4;
+        public readonly int maxCellLife = 60;
+        protected int totalId = 0;
 
         public int Count { get => cellCollection.Count(); }
         //public void GenerateNewCell()
@@ -55,15 +57,21 @@ namespace WindowsFormsApp2.Controller
                         tmp.PosY -= tmp.SizeW;
                 } while (this.cellCollection.Count() == 0 && this.cellCollection.cells.Any<Cell>(x => x.isSamePosition(tmp)));
 
-                this.cellCollection.Add(new Cell(tmp, tmp.Id, tmp.ParentId, tmp.CellColor, r.Next(0, 3)));
+                this.cellCollection.Add(new Cell(tmp, totalId++, tmp.ParentId, tmp.CellColor, r.Next(0, 3)));
                 tmp.Children++;
             }
+        }
+
+        public void MoveCell(Cell tmp)
+        {
+            tmp.PosX = r.Next((int)tmp.PosX - 3, (int)tmp.PosX + 4);
+            tmp.PosY = r.Next((int)tmp.PosY - 3, (int)tmp.PosY + 4);
         }
 
         public void GenerateNewCellClick(Point loc)
         {
              //if (cellCollection.Count() == 0)
-                 this.cellCollection.Add(new Cell(loc.X, loc.Y, 0, 0, Color.FromArgb(r.Next(0, 255), r.Next(0, 255), r.Next(0, 255)), r.Next(0, 3)));                
+                 this.cellCollection.Add(new Cell(loc.X, loc.Y, totalId++, 0, Color.FromArgb(r.Next(0, 255), r.Next(0, 255), r.Next(0, 255)), r.Next(0, 3)));                
         }
         public void LifeCicle()
         {

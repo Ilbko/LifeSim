@@ -13,8 +13,8 @@ namespace WindowsFormsApp2.Model.Base
             this.CellColor = cellColor;
             this.Children = 0;
             this.MaxChildren = maxChildren;
-            this.SizeH = 5;
-            this.SizeW = 5;
+            this.SizeH = 20;
+            this.SizeW = 20;
         }
         public Cell(Cell cell, int id, int parentId, Color cellColor, int maxChildren) : this((int)cell.PosX, (int)cell.PosY, id, parentId, cellColor, maxChildren){}
         public int Id { get; private set; }
