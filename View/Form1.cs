@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp2.Controller;
 using WindowsFormsApp2.Model.Base;
+using WindowsFormsApp2.View;
 
 namespace WindowsFormsApp2
 {
@@ -42,7 +43,7 @@ namespace WindowsFormsApp2
 
             System.Windows.Forms.Timer timerBirth = new System.Windows.Forms.Timer();
             timerBirth.Tick += TimerBirth_Tick;
-            timerBirth.Interval = 1500;
+            timerBirth.Interval = 5000;
             timerBirth.Start();
         }
 
@@ -80,7 +81,7 @@ namespace WindowsFormsApp2
                     //Этот блок никак не будет влиять на работу программы, ведь мёртвая клетка не может породить новую клетку
                     try
                     {
-                        await Task.Run(() => controller.MoveCell(controller.cellCollection[i]));
+                        await Task.Run(() => controller.MoveCell(controller.cellCollection[i], this.ClientSize));
                     }
                     catch (System.ArgumentOutOfRangeException) { }
                 }
@@ -110,7 +111,13 @@ namespace WindowsFormsApp2
                     if (e.Location.X > item.PosX && e.Location.X < item.PosX + item.SizeW &&
                         e.Location.Y > item.PosY && e.Location.Y < item.PosY + item.SizeH)
                     {
-                        MessageBox.Show("asdfadss");
+                        Cell tmp = item;
+                        List<int> childId = new List<int>();
+                        foreach (Cell child in controller.cellCollection)
+                            if (child.ParentId == item.Id)
+                                childId.Add(child.Id);
+
+                        new FormInfo(tmp).Show();
                         break;
                     }
                 }

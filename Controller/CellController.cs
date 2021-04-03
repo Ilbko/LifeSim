@@ -4,6 +4,7 @@ using WindowsFormsApp2.Model.Base;
 using System.Linq;
 using System.Drawing;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace WindowsFormsApp2.Controller
 {
@@ -13,7 +14,7 @@ namespace WindowsFormsApp2.Controller
         protected Random r = new Random();
         protected readonly int radius = 25;
         protected readonly int minCellCount = 2;
-        public readonly int maxCellLife = 60;
+        public readonly int maxCellLife = 20;
         protected int totalId = 0;
 
         public int Count { get => cellCollection.Count(); }
@@ -43,7 +44,7 @@ namespace WindowsFormsApp2.Controller
 
         public void GenerateNewCell(Cell tmp)
         {
-            if (tmp.Children < tmp.MaxChildren)
+            if (tmp.ChildrenId.Value.Count() < tmp.MaxChildren)
             {
                 do
                 {
@@ -57,21 +58,40 @@ namespace WindowsFormsApp2.Controller
                         tmp.PosY -= tmp.SizeW;
                 } while (this.cellCollection.Count() == 0 && this.cellCollection.cells.Any<Cell>(x => x.isSamePosition(tmp)));
 
-                this.cellCollection.Add(new Cell(tmp, totalId++, tmp.ParentId, tmp.CellColor, r.Next(0, 3)));
-                tmp.Children++;
+                int newId = totalId++;
+                this.cellCollection.Add(new Cell(tmp, newId, tmp.Id, tmp.CellColor, r.Next(0, 5)));
+
+                tmp.ChildrenId.Value.Add(newId);
+                //tmp.Children++;
             }
         }
 
-        public void MoveCell(Cell tmp)
+        public void MoveCell(Cell tmp, Size field)
         {
+            //циклы по типу do while не подойдут, ибо если клетка родится далеко за пределами поля, программа зависнет
+            //do
+            //{
+            //    tmp.PosX = r.Next((int)tmp.PosX - 3, (int)tmp.PosX - 4);
+            //}
+            //while (tmp.PosX < 0 || tmp.PosX > field.Width - tmp.SizeW);
+
             tmp.PosX = r.Next((int)tmp.PosX - 3, (int)tmp.PosX + 4);
+            if (tmp.PosX < 0)
+                tmp.PosX = 0;
+            else if (tmp.PosX > field.Width - tmp.SizeW)
+                tmp.PosX = field.Width - tmp.SizeW;
+
             tmp.PosY = r.Next((int)tmp.PosY - 3, (int)tmp.PosY + 4);
+            if (tmp.PosY < 0)
+                tmp.PosY = 0;
+            else if (tmp.PosY > field.Height - tmp.SizeH)
+                tmp.PosY = field.Height - tmp.SizeH;
         }
 
         public void GenerateNewCellClick(Point loc)
         {
              //if (cellCollection.Count() == 0)
-                 this.cellCollection.Add(new Cell(loc.X, loc.Y, totalId++, 0, Color.FromArgb(r.Next(0, 255), r.Next(0, 255), r.Next(0, 255)), r.Next(0, 3)));                
+                 this.cellCollection.Add(new Cell(loc.X, loc.Y, totalId++, 0, Color.FromArgb(r.Next(0, 255), r.Next(0, 255), r.Next(0, 255)), r.Next(0, 5)));                
         }
         public void LifeCicle()
         {

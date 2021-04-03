@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace WindowsFormsApp2.Model.Base
 {
@@ -11,7 +13,7 @@ namespace WindowsFormsApp2.Model.Base
             this.Id = id;
             this.ParentId = parentId;
             this.CellColor = cellColor;
-            this.Children = 0;
+            //this.Children = 0;
             this.MaxChildren = maxChildren;
             this.SizeH = 20;
             this.SizeW = 20;
@@ -21,13 +23,16 @@ namespace WindowsFormsApp2.Model.Base
         public int ParentId { get; private set; }
         public Color CellColor { get; private set; }
 
-        public int Children { get; set; }
+        //Количество детей будет заменять список идентификаторов детей
+        //public int Children { get; set; }
         public int MaxChildren { get; private set; }
         public float PosX { get; set; }
         public float PosY { get; set; }
         public float SizeH { get; private set; }
         public float SizeW { get; private set; }
-        public int Age { get; private set; }
+        public int Age { get; set; }
+
+        public Lazy<List<int>> ChildrenId = new Lazy<List<int>>();
         public bool isSamePosition(Cell other) => other.PosX == PosX && other.PosY == PosY;
         public void Old() => Age++;
     }
