@@ -23,7 +23,7 @@ namespace WindowsFormsApp2.Controller
             radius = (int)((tmp.SizeH / 3) * (tmp.SizeW / 3) * (int)Math.PI);
             Dictionary<int, Element> elements = new Dictionary<int, Element>();
 
-            foreach (Element item in elementCollection)
+            foreach(Element item in elementCollection)
             {
                 if (item.PosX > tmp.PosX - radius && item.PosX < tmp.PosX + tmp.SizeW + radius &&
                     item.PosY > tmp.PosY - radius && item.PosY < tmp.PosY + tmp.SizeH + radius)
