@@ -16,6 +16,43 @@ namespace WindowsFormsApp2.Controller
         protected int radius;
         protected int maxElementAge = 60;
 
+        public Element ElementFound(Cell tmp)
+        {
+            bool found = false;
+            radius = (int)((tmp.SizeH / 3) * (tmp.SizeW / 3) * (int)Math.PI);
+            Element tmp_el = new Element();
+
+            foreach (Element item in elementCollection)
+            {
+                if (item.PosX > tmp.PosX - radius && item.PosX < tmp.PosX + tmp.SizeW + radius &&
+                    item.PosY > tmp.PosY - radius && item.PosY < tmp.PosY + tmp.SizeH + radius)
+                {
+                    found = true;
+                    tmp_el = item;
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                tmp_el.PosX = -1;
+                tmp_el.PosY = -1;
+            }
+
+            return tmp_el;
+            //    return new Point (tmp_el.PosX, tmp_el.PosY);
+            
+            //return new Point(-1, -1);
+        }
+
+        public void ElementEat(Cell cell, Element element)
+        {
+            cell.Age -= 4;
+            if (cell.Age < 0)
+                cell.Age = 0;
+
+            elementCollection.Remove(element);
+        }
         public void GenerateNewElement(int CellPosX, int CellPosY, int CellSizeW, int CellSizeH, Size clientSize)
         {
             lock(this)

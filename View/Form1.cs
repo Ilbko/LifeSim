@@ -98,7 +98,7 @@ namespace WindowsFormsApp2
                     //Этот блок никак не будет влиять на работу программы, ведь мёртвая клетка не может породить новую клетку
                     try
                     {
-                        await Task.Run(() => controller.MoveCell(controller.cellCollection[i], this.ClientSize));
+                        await Task.Run(() => controller.MoveCell(controller.cellCollection[i], this.ClientSize, controller_el));
                     }
                     catch (System.ArgumentOutOfRangeException) { }
                 }

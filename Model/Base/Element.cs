@@ -11,6 +11,14 @@ namespace WindowsFormsApp2.Model.Base
             this.SizeW = 4;
         }
 
+        public Element(int posX, int posY)
+        {
+            this.SizeH = 4;
+            this.SizeW = 4;
+            this.PosX = posX;
+            this.PosY = posY;
+        }
+
         public int Age { get; set; }
         public int PosX { get; set; }
         public int PosY { get; set; }

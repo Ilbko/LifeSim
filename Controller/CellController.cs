@@ -5,6 +5,7 @@ using System.Linq;
 using System.Drawing;
 using System.Threading;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace WindowsFormsApp2.Controller
 {
@@ -73,7 +74,7 @@ namespace WindowsFormsApp2.Controller
             }
         }
 
-        public void MoveCell(Cell tmp, Size field)
+        public void MoveCell(Cell tmp, Size field, ElementController controller_el)
         {
             //циклы по типу do while не подойдут, ибо если клетка родится далеко за пределами поля, программа зависнет
             //do
@@ -83,17 +84,47 @@ namespace WindowsFormsApp2.Controller
             //while (tmp.PosX < 0 || tmp.PosX > field.Width - tmp.SizeW);
             lock (this)
             {
-                tmp.PosX = r.Next((int)tmp.PosX - 3, (int)tmp.PosX + 4);
-                if (tmp.PosX < 0)
-                    tmp.PosX = 0;
-                else if (tmp.PosX > field.Width - tmp.SizeW)
-                    tmp.PosX = field.Width - tmp.SizeW;
+                //Point wayPoint = controller_el.ElementFound(tmp);
+                Element wayElement = controller_el.ElementFound(tmp);
+                if (wayElement.PosX == -1)
+                {
+                    tmp.PosX = r.Next((int)tmp.PosX - 3, (int)tmp.PosX + 4);
+                    if (tmp.PosX < 0)
+                        tmp.PosX = 0;
+                    else if (tmp.PosX > field.Width - tmp.SizeW)
+                        tmp.PosX = field.Width - tmp.SizeW;
 
-                tmp.PosY = r.Next((int)tmp.PosY - 3, (int)tmp.PosY + 4);
-                if (tmp.PosY < 0)
-                    tmp.PosY = 0;
-                else if (tmp.PosY > field.Height - tmp.SizeH)
-                    tmp.PosY = field.Height - tmp.SizeH;
+                    tmp.PosY = r.Next((int)tmp.PosY - 3, (int)tmp.PosY + 4);
+                    if (tmp.PosY < 0)
+                        tmp.PosY = 0;
+                    else if (tmp.PosY > field.Height - tmp.SizeH)
+                        tmp.PosY = field.Height - tmp.SizeH;
+                }
+                else
+                {
+                    //int wayX = (int)Math.Abs(tmp.PosX - way.X);
+                    int wayX = (int)(tmp.PosX - wayElement.PosX);
+                    //int wayY = (int)Math.Abs(tmp.PosY - way.Y);
+                    int wayY = (int)(tmp.PosY - wayElement.PosY);
+
+                    if (Math.Abs(wayX) > Math.Abs(wayY))
+                    {
+                        if (wayX > 0)
+                            tmp.PosX -= 3;
+                        else
+                            tmp.PosX += 3;                       
+                    }
+                    else
+                    {
+                        if (wayY > 0)
+                            tmp.PosY -= 3;
+                        else
+                            tmp.PosY += 3;
+                    }
+
+                    if (Math.Abs(tmp.PosX - wayElement.PosX) <= 3 && Math.Abs(tmp.PosY - wayElement.PosY) <= 3)
+                        controller_el.ElementEat(tmp, wayElement);
+                }
             }
         }
 
