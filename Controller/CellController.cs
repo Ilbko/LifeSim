@@ -51,7 +51,7 @@ namespace WindowsFormsApp2.Controller
                 if (tmp.ChildrenId.Value.Count() < tmp.MaxChildren)
                 {
                     int newId = totalId++;
-                    Cell newCell = new Cell(tmp, newId, tmp.Id, tmp.CellColor, r.Next(0, 5));
+                    Cell newCell = new Cell(tmp, newId, tmp.Id, tmp.CellColor, r.Next(0, 3));
 
                     do
                     {
@@ -76,7 +76,7 @@ namespace WindowsFormsApp2.Controller
 
         public void MoveCell(Cell tmp, Size field, ElementController controller_el)
         {
-            //циклы по типу do while не подойдут, ибо если клетка родится далеко за пределами поля, программа зависнет
+            //циклы по типу do while не подойдут, ибо если клетка родится далеко за пределами поля, программа зависнет, пытаясь подобрать новую позицию для клетки
             //do
             //{
             //    tmp.PosX = r.Next((int)tmp.PosX - 3, (int)tmp.PosX - 4);
@@ -122,7 +122,8 @@ namespace WindowsFormsApp2.Controller
                             tmp.PosY += 3;
                     }
 
-                    if (Math.Abs(tmp.PosX - wayElement.PosX) <= 3 && Math.Abs(tmp.PosY - wayElement.PosY) <= 3)
+                    if ((Math.Abs(tmp.PosX - wayElement.PosX) <= 3 || Math.Abs(tmp.PosX + tmp.SizeW - wayElement.PosX) <= 3) && 
+                        (Math.Abs(tmp.PosY - wayElement.PosY) <= 3 || Math.Abs(tmp.PosY + tmp.SizeH - wayElement.PosY) <= 3))
                         controller_el.ElementEat(tmp, wayElement);
                 }
             }
@@ -159,3 +160,5 @@ namespace WindowsFormsApp2.Controller
         public void Remove(Cell cell) => this.cellCollection.Remove(cell);
     }
 }
+
+

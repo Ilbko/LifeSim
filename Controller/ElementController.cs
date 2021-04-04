@@ -19,8 +19,9 @@ namespace WindowsFormsApp2.Controller
         public Element ElementFound(Cell tmp)
         {
             bool found = false;
+            int distance;
             radius = (int)((tmp.SizeH / 3) * (tmp.SizeW / 3) * (int)Math.PI);
-            Element tmp_el = new Element();
+            Dictionary<int, Element> elements = new Dictionary<int, Element>();
 
             foreach (Element item in elementCollection)
             {
@@ -28,21 +29,31 @@ namespace WindowsFormsApp2.Controller
                     item.PosY > tmp.PosY - radius && item.PosY < tmp.PosY + tmp.SizeH + radius)
                 {
                     found = true;
-                    tmp_el = item;
-                    break;
+                    distance = (int)(Math.Abs(item.PosX - tmp.PosX) + Math.Abs(item.PosY - tmp.PosY));
+
+                    try
+                    {
+                        elements.Add(distance, item);
+                    }
+                    catch (System.ArgumentException) { }
                 }
             }
 
+            Element tmp_el = new Element();
             if (!found)
             {
                 tmp_el.PosX = -1;
                 tmp_el.PosY = -1;
             }
+            else
+            {
+                int min = elements.Min(x => x.Key);
+                Dictionary<int, Element> dictionary_el = elements.Where(x => x.Key == min).ToDictionary(x => x.Key, x => x.Value);
+                tmp_el = dictionary_el.Values.ElementAt(0);
+            }
 
+            elements.Clear();
             return tmp_el;
-            //    return new Point (tmp_el.PosX, tmp_el.PosY);
-            
-            //return new Point(-1, -1);
         }
 
         public void ElementEat(Cell cell, Element element)
@@ -55,7 +66,7 @@ namespace WindowsFormsApp2.Controller
         }
         public void GenerateNewElement(int CellPosX, int CellPosY, int CellSizeW, int CellSizeH, Size clientSize)
         {
-            lock(this)
+            lock (this)
             {
                 //слишком большой радиус
                 //radius = CellSizeH * CellSizeW * (int)Math.PI;
@@ -84,7 +95,7 @@ namespace WindowsFormsApp2.Controller
 
         public void AgeElement()
         {
-            lock(this)
+            lock (this)
             {
                 for (int i = 0; i < elementCollection.Count(); i++)
                 {
