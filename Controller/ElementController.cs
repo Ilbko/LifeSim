@@ -19,30 +19,36 @@ namespace WindowsFormsApp2.Controller
         public Element ElementFound(Cell tmp)
         {
             bool found = false;
+            int distance;
             radius = (int)((tmp.SizeH / 3) * (tmp.SizeW / 3) * (int)Math.PI);
-            Element tmp_el = new Element();
+            Dictionary<int, Element> elements = new Dictionary<int, Element>();
 
-            foreach (Element item in elementCollection)
+            foreach(Element item in elementCollection)
             {
                 if (item.PosX > tmp.PosX - radius && item.PosX < tmp.PosX + tmp.SizeW + radius &&
                     item.PosY > tmp.PosY - radius && item.PosY < tmp.PosY + tmp.SizeH + radius)
                 {
                     found = true;
-                    tmp_el = item;
-                    break;
+                    distance = (int)(Math.Abs(item.PosX - tmp.PosX) + Math.Abs(item.PosY - tmp.PosY));
+
+                    elements.Add(distance, item);
                 }
             }
 
+            Element tmp_el = new Element();
             if (!found)
             {
                 tmp_el.PosX = -1;
                 tmp_el.PosY = -1;
             }
+            else
+            {
+                int min = elements.Min(x => x.Key);
+                Dictionary<int, Element> dictionary_el = elements.Where(x => x.Key == min).ToDictionary(x => x.Key, x => x.Value);
+                tmp_el = dictionary_el.Values.ElementAt(0);
+            }
 
             return tmp_el;
-            //    return new Point (tmp_el.PosX, tmp_el.PosY);
-            
-            //return new Point(-1, -1);
         }
 
         public void ElementEat(Cell cell, Element element)

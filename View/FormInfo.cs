@@ -50,7 +50,7 @@ namespace WindowsFormsApp2.View
                                  $"Время жизни: {infoCell.Age}\r\n" +
                                  $"Цвет: {infoCell.CellColor.ToString()}\r\n" +
                                  $"До смерти: {controller.maxCellLife - infoCell.Age}\r\n" +
-                                 $"Количество детей: {infoCell.ChildrenId.Value.Count()}\r\n" +
+                                 $"Количество детей: {infoCell.ChildrenId.Value.Count()} из {infoCell.MaxChildren}\r\n" +
                                  $"Дети (Id): {childIdStr}\r\n";
 
             childIdStr = string.Empty;
