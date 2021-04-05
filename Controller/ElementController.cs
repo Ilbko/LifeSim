@@ -14,30 +14,33 @@ namespace WindowsFormsApp2.Controller
         public Elements elementCollection { get; private set; } = new Elements();
         protected Random r = new Random();
         protected int radius;
-        protected int maxElementAge = 60;
+        public readonly int maxElementAge = 60;
 
         public Element ElementFound(Cell tmp)
         {
             bool found = false;
             int distance;
-            radius = (int)((tmp.SizeH / 3) * (tmp.SizeW / 3) * (int)Math.PI);
+            radius = (tmp.SizeH + tmp.SizeW) * (int)Math.PI;
             Dictionary<int, Element> elements = new Dictionary<int, Element>();
 
-            foreach(Element item in elementCollection)
+            try
             {
-                if (item.PosX > tmp.PosX - radius && item.PosX < tmp.PosX + tmp.SizeW + radius &&
-                    item.PosY > tmp.PosY - radius && item.PosY < tmp.PosY + tmp.SizeH + radius)
+                foreach (Element item in elementCollection)
                 {
-                    found = true;
-                    distance = (int)(Math.Abs(item.PosX - tmp.PosX) + Math.Abs(item.PosY - tmp.PosY));
-
-                    try
+                    if (item.PosX > tmp.PosX - radius && item.PosX < tmp.PosX + tmp.SizeW + radius &&
+                        item.PosY > tmp.PosY - radius && item.PosY < tmp.PosY + tmp.SizeH + radius)
                     {
-                        elements.Add(distance, item);
+                        found = true;
+                        distance = (int)(Math.Abs(item.PosX - tmp.PosX) + Math.Abs(item.PosY - tmp.PosY));
+
+                        try
+                        {
+                            elements.Add(distance, item);
+                        }
+                        catch (System.ArgumentException) { }
                     }
-                    catch (System.ArgumentException) { }
                 }
-            }
+            } catch(System.InvalidOperationException) { }
 
             Element tmp_el = new Element();
             if (!found)
@@ -70,7 +73,7 @@ namespace WindowsFormsApp2.Controller
             {
                 //слишком большой радиус
                 //radius = CellSizeH * CellSizeW * (int)Math.PI;
-                radius = (CellSizeH / 5) * (CellSizeW / 5) * (int)Math.PI;
+                radius = (CellSizeH + CellSizeW) * (int)Math.PI;
 
                 for (int i = 0; i < r.Next(1, 5); i++)
                 {
@@ -107,5 +110,7 @@ namespace WindowsFormsApp2.Controller
         }
 
         public void Remove(Element element) => this.elementCollection.Remove(element);
+
+        public void Clear() => this.elementCollection.Clear();
     }
 }

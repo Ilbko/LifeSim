@@ -21,6 +21,8 @@ namespace WindowsFormsApp2.Model
         public void Add(Element element) => elements.Add(element);
         public void Remove(Element element) => elements.Remove(element);
 
+        public void Clear() => elements.Clear();
+
         public IEnumerator GetEnumerator() => elements.GetEnumerator();
     }
 }

@@ -18,6 +18,17 @@ namespace WindowsFormsApp2.Model.Base
             this.SizeH = 20;
             this.SizeW = 20;
         }
+        public Cell(int posX, int posY, int sizeW, int sizeH, int id, int parentId, Color cellColor, int maxChildren)
+        {
+            this.PosX = posX;
+            this.PosY = posY;
+            this.SizeH = sizeH;
+            this.SizeW = sizeW;
+            this.Id = id;
+            this.ParentId = parentId;
+            this.CellColor = cellColor;
+            this.MaxChildren = maxChildren;
+        }
         public Cell(Cell cell, int id, int parentId, Color cellColor, int maxChildren) : this((int)cell.PosX, (int)cell.PosY, id, parentId, cellColor, maxChildren){}
         public int Id { get; private set; }
         public int ParentId { get; private set; }
@@ -28,12 +39,14 @@ namespace WindowsFormsApp2.Model.Base
         /*Lazy, чтобы не приходилось выделять новую память под список, если клетка не может иметь детей
           или чтобы не выделять память с помощью if (ChildrenId == null)*/
         public Lazy<List<int>> ChildrenId { get; set; } = new Lazy<List<int>>();
-        public int MaxChildren { get; private set; }
+        public int MaxChildren { get; set; }
         public float PosX { get; set; }
         public float PosY { get; set; }
-        public float SizeH { get; private set; }
-        public float SizeW { get; private set; }
+        public int SizeH { get; set; }
+        public int SizeW { get; set; }
         public int Age { get; set; }
+
+        public UInt16 FoodEaten { get; set; }
 
         public bool isSamePosition(Cell other) => other.PosX == PosX && other.PosY == PosY;
         public void Old() => Age++;

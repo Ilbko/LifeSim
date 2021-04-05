@@ -17,7 +17,7 @@ namespace WindowsFormsApp2.Controller
         protected readonly int radius = 25;
         protected readonly int minCellCount = 2;
         public readonly int maxCellLife = 20;
-        protected int totalId = 0;
+        public int totalId = 0;
 
         //public int Count { get => cellCollection.Count(); }
         //public void GenerateNewCell()
@@ -86,6 +86,7 @@ namespace WindowsFormsApp2.Controller
             {
                 //Point wayPoint = controller_el.ElementFound(tmp);
                 Element wayElement = controller_el.ElementFound(tmp);
+
                 if (wayElement.PosX == -1)
                 {
                     tmp.PosX = r.Next((int)tmp.PosX - 3, (int)tmp.PosX + 4);
@@ -122,9 +123,16 @@ namespace WindowsFormsApp2.Controller
                             tmp.PosY += 3;
                     }
 
-                    if ((Math.Abs(tmp.PosX - wayElement.PosX) <= 3 || Math.Abs(tmp.PosX + tmp.SizeW - wayElement.PosX) <= 3) && 
+                    if ((Math.Abs(tmp.PosX - wayElement.PosX) <= 3 || Math.Abs(tmp.PosX + tmp.SizeW - wayElement.PosX) <= 3) &&
                         (Math.Abs(tmp.PosY - wayElement.PosY) <= 3 || Math.Abs(tmp.PosY + tmp.SizeH - wayElement.PosY) <= 3))
+                    {
                         controller_el.ElementEat(tmp, wayElement);
+                        if (++tmp.FoodEaten % 3 == 0)
+                        {
+                            tmp.SizeH++;
+                            tmp.SizeW++;
+                        }
+                    }
                 }
             }
         }
@@ -132,7 +140,7 @@ namespace WindowsFormsApp2.Controller
         public void GenerateNewCellClick(Point loc)
         {
              //if (cellCollection.Count() == 0)
-                 this.cellCollection.Add(new Cell(loc.X, loc.Y, totalId++, 0, Color.FromArgb(r.Next(0, 255), r.Next(0, 255), r.Next(0, 255)), r.Next(3, 5)));                
+                 this.cellCollection.Add(new Cell(loc.X, loc.Y, totalId++, -1, Color.FromArgb(r.Next(0, 255), r.Next(0, 255), r.Next(0, 255)), r.Next(3, 5)));                
         }
         public void LifeCycle(Size clientSize, ElementController controller_el)
         {
@@ -158,6 +166,8 @@ namespace WindowsFormsApp2.Controller
         }
         public void Add(Cell cell) => this.cellCollection.Add(cell);
         public void Remove(Cell cell) => this.cellCollection.Remove(cell);
+
+        public void Clear() => this.cellCollection.Clear();
     }
 }
 

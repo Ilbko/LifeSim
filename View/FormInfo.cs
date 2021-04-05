@@ -49,6 +49,7 @@ namespace WindowsFormsApp2.View
                                  $"Родитель (Id): {infoCell.ParentId}\r\n" +
                                  $"Время жизни: {infoCell.Age}\r\n" +
                                  $"Цвет: {infoCell.CellColor.ToString()}\r\n" +
+                                 $"Съеденно микроэлементов: {infoCell.FoodEaten}\r\n" +
                                  $"До смерти: {controller.maxCellLife - infoCell.Age}\r\n" +
                                  $"Количество детей: {infoCell.ChildrenId.Value.Count()} из {infoCell.MaxChildren}\r\n" +
                                  $"Дети (Id): {childIdStr}\r\n";
@@ -62,6 +63,8 @@ namespace WindowsFormsApp2.View
         private void button1_Click(object sender, EventArgs e)
         {
             infoCell.Age = controller.maxCellLife;
+            controller.cellCollection.Remove(infoCell);
+            //this.Dispose();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -74,6 +77,30 @@ namespace WindowsFormsApp2.View
         private async void button3_Click(object sender, EventArgs e)
         {
             await Task.Run(() => controller.GenerateNewCell(infoCell));           
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            //List<Cell> children = controller.cellCollection.Where(x => x.ParentId == infoCell.Id);
+            //foreach(Cell item in children)
+            //{
+            //    item.Age = controller.maxCellLife;
+            //    controller.cellCollection.Remove(item);
+            //}
+
+            controller.cellCollection.Where(x => x.ParentId == infoCell.Id).ForEach(x => x.Age = controller.maxCellLife);
+            controller.cellCollection.RemoveAll(x => x.ParentId == infoCell.Id);
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            controller.cellCollection.Where(x => x.CellColor == infoCell.CellColor).ForEach(x => x.Age = controller.maxCellLife);
+            controller.cellCollection.RemoveAll(x => x.CellColor == infoCell.CellColor);
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            infoCell.MaxChildren++;
         }
     }
 }
