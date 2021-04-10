@@ -31,7 +31,9 @@ namespace WindowsFormsApp2.View
             this.trackBar3.Value = r.Next(0, this.trackBar3.Maximum);
 
             this.numericUpDown1.Maximum = clientSize.Width / 2;
+            this.label10.Text = this.numericUpDown1.Maximum.ToString();
             this.numericUpDown2.Maximum = clientSize.Height / 2;
+            this.label11.Text = this.numericUpDown2.Maximum.ToString();
 
             buttonTimer.Interval = 1;
             buttonTimer.Tick += ButtonTimer_Tick;

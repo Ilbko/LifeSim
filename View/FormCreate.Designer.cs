@@ -45,6 +45,9 @@ namespace WindowsFormsApp2.View
             this.label8 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -115,7 +118,7 @@ namespace WindowsFormsApp2.View
             this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label4.ForeColor = System.Drawing.Color.Aquamarine;
-            this.label4.Location = new System.Drawing.Point(12, 73);
+            this.label4.Location = new System.Drawing.Point(11, 92);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(154, 15);
             this.label4.TabIndex = 5;
@@ -124,7 +127,7 @@ namespace WindowsFormsApp2.View
             // numericUpDown3
             // 
             this.numericUpDown3.BackColor = System.Drawing.SystemColors.Info;
-            this.numericUpDown3.Location = new System.Drawing.Point(12, 91);
+            this.numericUpDown3.Location = new System.Drawing.Point(11, 110);
             this.numericUpDown3.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -159,7 +162,7 @@ namespace WindowsFormsApp2.View
             this.label5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label5.ForeColor = System.Drawing.Color.Aquamarine;
-            this.label5.Location = new System.Drawing.Point(12, 128);
+            this.label5.Location = new System.Drawing.Point(11, 147);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(38, 15);
             this.label5.TabIndex = 8;
@@ -168,7 +171,7 @@ namespace WindowsFormsApp2.View
             // trackBar1
             // 
             this.trackBar1.BackColor = System.Drawing.SystemColors.Control;
-            this.trackBar1.Location = new System.Drawing.Point(13, 147);
+            this.trackBar1.Location = new System.Drawing.Point(12, 166);
             this.trackBar1.Maximum = 255;
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Size = new System.Drawing.Size(196, 45);
@@ -179,7 +182,7 @@ namespace WindowsFormsApp2.View
             // trackBar2
             // 
             this.trackBar2.BackColor = System.Drawing.SystemColors.Control;
-            this.trackBar2.Location = new System.Drawing.Point(13, 198);
+            this.trackBar2.Location = new System.Drawing.Point(12, 217);
             this.trackBar2.Maximum = 255;
             this.trackBar2.Name = "trackBar2";
             this.trackBar2.Size = new System.Drawing.Size(196, 45);
@@ -189,7 +192,7 @@ namespace WindowsFormsApp2.View
             // 
             // trackBar3
             // 
-            this.trackBar3.Location = new System.Drawing.Point(14, 249);
+            this.trackBar3.Location = new System.Drawing.Point(13, 268);
             this.trackBar3.Maximum = 255;
             this.trackBar3.Name = "trackBar3";
             this.trackBar3.Size = new System.Drawing.Size(195, 45);
@@ -204,7 +207,7 @@ namespace WindowsFormsApp2.View
             this.label6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label6.ForeColor = System.Drawing.Color.Red;
-            this.label6.Location = new System.Drawing.Point(215, 147);
+            this.label6.Location = new System.Drawing.Point(214, 166);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(18, 15);
             this.label6.TabIndex = 12;
@@ -217,7 +220,7 @@ namespace WindowsFormsApp2.View
             this.label7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label7.ForeColor = System.Drawing.Color.Green;
-            this.label7.Location = new System.Drawing.Point(215, 198);
+            this.label7.Location = new System.Drawing.Point(214, 217);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(18, 15);
             this.label7.TabIndex = 13;
@@ -230,7 +233,7 @@ namespace WindowsFormsApp2.View
             this.label8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label8.ForeColor = System.Drawing.Color.Blue;
-            this.label8.Location = new System.Drawing.Point(215, 249);
+            this.label8.Location = new System.Drawing.Point(214, 268);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(17, 15);
             this.label8.TabIndex = 14;
@@ -238,7 +241,7 @@ namespace WindowsFormsApp2.View
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(56, 127);
+            this.button1.Location = new System.Drawing.Point(55, 146);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(175, 14);
             this.button1.TabIndex = 15;
@@ -246,7 +249,7 @@ namespace WindowsFormsApp2.View
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(14, 300);
+            this.button2.Location = new System.Drawing.Point(13, 319);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(218, 24);
             this.button2.TabIndex = 16;
@@ -254,11 +257,49 @@ namespace WindowsFormsApp2.View
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label9.ForeColor = System.Drawing.Color.Orange;
+            this.label9.Location = new System.Drawing.Point(11, 62);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(44, 15);
+            this.label9.TabIndex = 17;
+            this.label9.Text = "Макс.";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label10.ForeColor = System.Drawing.Color.GreenYellow;
+            this.label10.Location = new System.Drawing.Point(66, 62);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(2, 15);
+            this.label10.TabIndex = 18;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label11.ForeColor = System.Drawing.Color.GreenYellow;
+            this.label11.Location = new System.Drawing.Point(178, 62);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(2, 15);
+            this.label11.TabIndex = 19;
+            // 
             // FormCreate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(244, 336);
+            this.ClientSize = new System.Drawing.Size(244, 351);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label8);
@@ -276,8 +317,8 @@ namespace WindowsFormsApp2.View
             this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.label1);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(260, 375);
-            this.MinimumSize = new System.Drawing.Size(260, 375);
+            this.MaximumSize = new System.Drawing.Size(260, 390);
+            this.MinimumSize = new System.Drawing.Size(260, 390);
             this.Name = "FormCreate";
             this.ShowIcon = false;
             this.Text = "FormCreate";
@@ -310,5 +351,8 @@ namespace WindowsFormsApp2.View
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
     }
 }

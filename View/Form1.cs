@@ -61,8 +61,6 @@ namespace WindowsFormsApp2
             {
                 this.BackColor = Color.Black;
                 this.elementColor = Color.White;
-                buttonTip.BackColor = Color.DarkGray;
-                buttonTip.ForeColor = Color.White;
             }
 
             elementPen = new Pen(elementColor, 3);
