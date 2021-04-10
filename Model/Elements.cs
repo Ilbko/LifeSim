@@ -4,9 +4,7 @@ using WindowsFormsApp2.Model.Base;
 
 namespace WindowsFormsApp2.Model
 {
-    public static class ListExtension
-    {
-    }
+    //Класс полиморфической оболочки для списка микроэлементов
     public class Elements : IEnumerable
     {
         public List<Element> elements { get; private set; } = new List<Element>();

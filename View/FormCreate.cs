@@ -11,6 +11,7 @@ using WindowsFormsApp2.Controller;
 
 namespace WindowsFormsApp2.View
 {
+    //Форма создания кастомной клетки
     public partial class FormCreate : Form
     {
         protected Random r = new Random();
@@ -26,15 +27,18 @@ namespace WindowsFormsApp2.View
         public FormCreate(CellController controller, Size clientSize, Point loc)
         {
             InitializeComponent();
+            //Рандомизация значений трекбаров для цвета
             this.trackBar1.Value = r.Next(0, this.trackBar1.Maximum);
             this.trackBar2.Value = r.Next(0, this.trackBar2.Maximum);
             this.trackBar3.Value = r.Next(0, this.trackBar3.Maximum);
 
+            //Определение максимальных значений длины и ширины 
             this.numericUpDown1.Maximum = clientSize.Width / 2;
             this.label10.Text = this.numericUpDown1.Maximum.ToString();
             this.numericUpDown2.Maximum = clientSize.Height / 2;
             this.label11.Text = this.numericUpDown2.Maximum.ToString();
 
+            //Таймер для изменения цвета кнопки (косметика)
             buttonTimer.Interval = 1;
             buttonTimer.Tick += ButtonTimer_Tick;
             buttonTimer.Start();
@@ -50,6 +54,7 @@ namespace WindowsFormsApp2.View
             //}
         }
 
+        //Событие тика таймера изменения цвета кнопки создания
         private void ButtonTimer_Tick(object sender, EventArgs e)
         {
             this.button2.BackColor = Color.FromArgb((this.button2.BackColor.R + 1) % 255,
@@ -60,13 +65,16 @@ namespace WindowsFormsApp2.View
                                                     255 - this.button2.BackColor.R);
         }
 
+        //Событие изменения значений любого с трекбаров
         private void trackBar_ValueChanged(object sender, EventArgs e)
         {
+            //Изменяется цвет кнопки для показа цвета
             this.button1.BackColor = Color.FromArgb(this.trackBar1.Value,
                                                     this.trackBar2.Value,
                                                     this.trackBar3.Value);
         }
 
+        //Событие клика кнопки создания
         private void button2_Click(object sender, EventArgs e)
         {
             controller.cellCollection.Add(new Model.Base.Cell(location.X, location.Y, (int)numericUpDown1.Value, (int)numericUpDown2.Value, controller.totalId++, -1,

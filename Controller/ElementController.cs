@@ -16,21 +16,26 @@ namespace WindowsFormsApp2.Controller
         protected int radius;
         public readonly int maxElementAge = 60;
 
+        //Метод поиска элемента
         public Element ElementFound(Cell tmp)
         {
             bool found = false;
             int distance;
             radius = (tmp.SizeH + tmp.SizeW) * (int)Math.PI;
+            //Словарь, хранящий себе дистанцию к элементу от клетки и сам элемент
             Dictionary<int, Element> elements = new Dictionary<int, Element>();
 
+            //К моменту обращения элемент может уже не существовать, поэтому цикл обёрнут в try catch.
             try
             {
                 foreach (Element item in elementCollection)
                 {
+                    //Если элемент в радиусе видимости был найден
                     if (item.PosX > tmp.PosX - radius && item.PosX < tmp.PosX + tmp.SizeW + radius &&
                         item.PosY > tmp.PosY - radius && item.PosY < tmp.PosY + tmp.SizeH + radius)
                     {
                         found = true;
+                        //Расчёт дистанции с помощью модулей
                         distance = (int)(Math.Abs(item.PosX - tmp.PosX) + Math.Abs(item.PosY - tmp.PosY));
 
                         try
@@ -43,6 +48,7 @@ namespace WindowsFormsApp2.Controller
             } catch(System.InvalidOperationException) { }
 
             Element tmp_el = new Element();
+            //Если элемент не был найден, то локация элемента устанавливается данными числами
             if (!found)
             {
                 tmp_el.PosX = -1;
@@ -50,8 +56,11 @@ namespace WindowsFormsApp2.Controller
             }
             else
             {
+                //Выбирается минимальный с ключей словаря дистанций и элементов
                 int min = elements.Min(x => x.Key);
+                //Достаётся элемент с минимальной дистанцией
                 Dictionary<int, Element> dictionary_el = elements.Where(x => x.Key == min).ToDictionary(x => x.Key, x => x.Value);
+                //Локация элемента устанавливается
                 tmp_el = dictionary_el.Values.ElementAt(0);
             }
 
@@ -59,6 +68,7 @@ namespace WindowsFormsApp2.Controller
             return tmp_el;
         }
 
+        //Метод поедания элемента
         public void ElementEat(Cell cell, Element element)
         {
             cell.Age -= 4;
@@ -67,6 +77,8 @@ namespace WindowsFormsApp2.Controller
 
             elementCollection.Remove(element);
         }
+
+        //Метод генерации новых элементов с учётом границ окна
         public void GenerateNewElement(int CellPosX, int CellPosY, int CellSizeW, int CellSizeH, Size clientSize)
         {
             lock (this)
@@ -75,10 +87,12 @@ namespace WindowsFormsApp2.Controller
                 //radius = CellSizeH * CellSizeW * (int)Math.PI;
                 radius = (CellSizeH + CellSizeW) * (int)Math.PI;
 
+                //Спавнится от одного до четырёх элементов
                 for (int i = 0; i < r.Next(1, 5); i++)
                 {
                     Element newElement = new Element();
 
+                    //Определяется позиция элемента с проверками пределов поля
                     newElement.PosX += r.Next(CellPosX - radius, CellPosX - (int)newElement.SizeW + radius);
                     if (newElement.PosX < 0)
                         newElement.PosX = 0;
@@ -96,6 +110,7 @@ namespace WindowsFormsApp2.Controller
             }
         }
 
+        //Метод старения элементов
         public void AgeElement()
         {
             lock (this)
@@ -104,13 +119,12 @@ namespace WindowsFormsApp2.Controller
                 {
                     elementCollection[i].Old();
                     if (elementCollection[i].Age >= maxElementAge)
-                        Remove(elementCollection[i]);
+                        elementCollection.Remove(elementCollection[i]);
+                        //Remove(elementCollection[i]);
                 }
             }
         }
 
-        public void Remove(Element element) => this.elementCollection.Remove(element);
-
-        public void Clear() => this.elementCollection.Clear();
+        //public void Remove(Element element) => this.elementCollection.Remove(element);
     }
 }

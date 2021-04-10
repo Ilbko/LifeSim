@@ -5,9 +5,12 @@ using System.Linq;
 
 namespace WindowsFormsApp2.Model
 {
+    //Полиморфная оболочка для списка объектов класса клетки
     public class Cells : IEnumerable
     {
+        //Список клеток с приватным сетом, что запрещает взаимодейстовать со списком как-либо помимо методов этого класса
         public List<Cell> cells { get; private set; } = new List<Cell>();
+        //Индексатор для списка
         public Cell this[int key] 
         {
             get => cells[key];
